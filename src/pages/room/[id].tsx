@@ -1,4 +1,4 @@
-import useSocket from "hooks/useSocket";
+import useSocket from "@/hooks/useSocket";
 import { useRouter } from "next/router";
 import { EffectCallback, useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
@@ -58,7 +58,43 @@ export default function Room() {
     };
 
     const handleRoomJoined = () => {
+        navigator.mediaDevices
+            .getUserMedia({
+                audio: true,
+                video: {width: 500, height: 500}
+            }).then((stream) => {
+                userStreamRef.current = stream;
+                userVideoRef.current.srcObject = stream;
+                userVideoRef.current.onloadedmetadata = () => {
+                    userVideoRef.current.play();
+                };
+                socketRef.current?.emit('ready', roomName);
+            }).catch((err) => {
+                console.log('error: ', err);
+            });
+    };
 
+    const initiateCall = () => {
+        if(hostRef.current) {
+            rtcConnectionRef.current = createPeerConnection();
+            rtcConnectionRef.current.addTrack(
+                userStreamRef.current.getTracks()[0],
+                userStreamRef.current
+            );
+            rtcConnectionRef.current.addTrack(
+                userStreamRef.current.getTracks()[1],
+                userStreamRef.current
+            );
+            rtcConnectionRef.current
+                .createOffer()
+                .then((offer: Promise<RTCSessionDescription>) => {
+                    rtcConnectionRef.current.setLocalDescription(offer);
+                    socketRef.current?.emit('offer', offer, roomName);
+                })
+                .catch((error: Error) => {
+                    console.log(error)
+                })
+        }
     }
 
     return(

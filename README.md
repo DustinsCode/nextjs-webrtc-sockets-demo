@@ -1,3 +1,7 @@
+# P2P Video Call Demo
+
+Based on [this tutorial](https://www.stackfive.io/work/webrtc/peer-to-peer-video-call-with-next-js-socket-io-and-native-webrtc-apis) but with typescript and a few other changes! Mostly a proof of concept before diving into an attempted discord clone.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
 import { Server, Socket } from "socket.io";
-import { NextApiResponseWithSocket } from "types/types";
+import { NextApiResponseWithSocket } from "@/types/types";
 
 export default function SocketHandler(req: NextApiRequest, res: NextApiResponseWithSocket) {
     if (res.socket.server.io) {
